@@ -22,7 +22,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 public class DetectWechatEventListenerBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetectWechatEventListenerBeanFactoryPostProcessor.class);
     private String[] basePackages;
-    private String wechatEventListenersBeanName = "wechatEventListeners";
+    private String wechatEventHandlersBeanName = "wechatEventHandlers";
     private String rootControllerBeanName = "rootController";
 
     @Override
@@ -35,10 +35,10 @@ public class DetectWechatEventListenerBeanFactoryPostProcessor implements BeanFa
                     if (registry instanceof DefaultListableBeanFactory) {
                         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) registry;
                         BeanDefinition beanDefinition = defaultListableBeanFactory.getBeanDefinition(rootControllerBeanName);
-                        Object object = beanDefinition.getPropertyValues().get(wechatEventListenersBeanName);
+                        Object object = beanDefinition.getPropertyValues().get(wechatEventHandlersBeanName);
                         if (object == null) {
                             WechatEventHandlers wechatEventHandlers = new WechatEventHandlers();
-                            beanDefinition.getPropertyValues().addPropertyValue(wechatEventListenersBeanName, wechatEventHandlers);
+                            beanDefinition.getPropertyValues().addPropertyValue(wechatEventHandlersBeanName, wechatEventHandlers);
                             object = wechatEventHandlers;
                         }
                         WechatEventHandlers wechatEventHandlers = (WechatEventHandlers) object;

@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * @author fay  fay9395@gmail.com
  * @date 2018/4/13 下午1:38.
+ * 注意类名不要改 {@link cn.fay.wechat.common.beanfactorypostprocessor.DetectWechatEventListenerBeanFactoryPostProcessor}
  */
 public class WechatEventHandlers implements WechatEventHandler {
     private List<WechatEventHandler> listeners;
