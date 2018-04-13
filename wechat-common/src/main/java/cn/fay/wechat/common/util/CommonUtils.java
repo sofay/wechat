@@ -45,6 +45,10 @@ public class CommonUtils {
      */
     public static String parseXMLValue(String xmlSource, String key) {
         Document document = extractDocument(xmlSource);
+        return parseXMLValue(document, key);
+    }
+
+    public static String parseXMLValue(Document document, String key) {
         NodeList nodeList = document.getElementsByTagName(key);
         int length = nodeList.getLength();
         if (length > 0) {
@@ -53,6 +57,7 @@ public class CommonUtils {
         }
         return null;
     }
+
 
     public static Document extractDocument(String xmlSource) {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

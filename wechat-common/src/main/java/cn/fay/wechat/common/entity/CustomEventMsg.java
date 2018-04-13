@@ -9,4 +9,12 @@ public class CustomEventMsg extends EventMsg {
      * 事件KEY值
      */
     private String eventKey;
+
+    public String getEventKey() {
+        return eventKey;
+    }
+
+    public void setEventKey(String eventKey) {
+        this.eventKey = eventKey;
+    }
 }

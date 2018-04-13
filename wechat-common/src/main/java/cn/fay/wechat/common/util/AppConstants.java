@@ -13,4 +13,9 @@ public class AppConstants {
     public static final String XML_CREATETIME_TAG_NAME = "CreateTime";
     public static final String XML_MSGTYPE_TAG_NAME = "MsgType";
     public static final String XML_EVENT_TAG_NAME = "Event";
+    public static final String XML_EVENT_KEY_TAG_NAME = "EventKey";
+    public static final String XML_LATITUDE_TAG_NAME = "Latitude";
+    public static final String XML_LONGITUDE_TAG_NAME = "Longitude";
+    public static final String XML_PRECISION_TAG_NAME = "Precision";
+    public static final String XML_TICKET_TAG_NAME = "Ticket";
 }

@@ -1,8 +1,8 @@
 package cn.fay.wechat.common.beanfactorypostprocessor;
 
 import cn.fay.wechat.common.annotation.Listener;
-import cn.fay.wechat.common.listener.WechatEventListener;
-import cn.fay.wechat.common.listener.WechatEventListeners;
+import cn.fay.wechat.common.listener.WechatEventHandler;
+import cn.fay.wechat.common.listener.WechatEventHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -37,12 +37,12 @@ public class DetectWechatEventListenerBeanFactoryPostProcessor implements BeanFa
                         BeanDefinition beanDefinition = defaultListableBeanFactory.getBeanDefinition(rootControllerBeanName);
                         Object object = beanDefinition.getPropertyValues().get(wechatEventListenersBeanName);
                         if (object == null) {
-                            WechatEventListeners wechatEventListeners = new WechatEventListeners();
-                            beanDefinition.getPropertyValues().addPropertyValue(wechatEventListenersBeanName, wechatEventListeners);
-                            object = wechatEventListeners;
+                            WechatEventHandlers wechatEventHandlers = new WechatEventHandlers();
+                            beanDefinition.getPropertyValues().addPropertyValue(wechatEventListenersBeanName, wechatEventHandlers);
+                            object = wechatEventHandlers;
                         }
-                        WechatEventListeners wechatEventListeners = (WechatEventListeners) object;
-                        wechatEventListeners.registListener(/*init now*/beanFactory.getBean(definitionHolder.getBeanName(), WechatEventListener.class));
+                        WechatEventHandlers wechatEventHandlers = (WechatEventHandlers) object;
+                        wechatEventHandlers.registListener(/*init now*/beanFactory.getBean(definitionHolder.getBeanName(), WechatEventHandler.class));
                     }
                     LOGGER.info("DETECTED WECHAT EVENT LISTENER: {}", definitionHolder.getBeanDefinition().getBeanClassName());
                 }

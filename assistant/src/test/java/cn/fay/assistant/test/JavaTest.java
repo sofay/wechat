@@ -20,4 +20,10 @@ public class JavaTest {
         System.out.println(CommonUtils.parseXMLValue(xml, AppConstants.XML_EVENT_TAG_NAME));
         System.out.println(CommonUtils.escapeFromCDATA("<    ![CDATA[FromUser]]"));
     }
+
+    @Test
+    public void te() {
+        StringBuilder sb = new StringBuilder();
+        System.out.println(sb.toString().equals(""));
+    }
 }
