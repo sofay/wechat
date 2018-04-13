@@ -6,6 +6,9 @@ spring:
 ---
 spring:
   profiles: dev
+logging:
+  level:
+   root: info
 
 ---
 spring:

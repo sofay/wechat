@@ -1,0 +1,20 @@
+package cn.fay.wechat.common.entity;
+
+/**
+ * @author fay  fay9395@gmail.com
+ * @date 2018/4/13 下午1:31.
+ */
+public class LocationEventMsg extends EventMsg {
+    /**
+     * 地理位置纬度
+     */
+    private Double latitude;
+    /**
+     * 地理位置经度
+     */
+    private Double longitude;
+    /**
+     * 地理位置精度
+     */
+    private Double precision;
+}
