@@ -8,6 +8,5 @@ import org.springframework.context.annotation.PropertySource;
  * @date 2018/4/12 下午8:00.
  */
 @Configuration
-@PropertySource("classpath:config.properties")
-public class Config {
+public class RootConfig {
 }

@@ -34,5 +34,6 @@ public class AppTest {
     public void test() {
 //        System.err.println(wechatConfig);
         System.err.println(CommonUtils.getAccessToken(wechatConfig.getAppid(), wechatConfig.getAppsecret()));
+
     }
 }
