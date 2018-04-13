@@ -6,6 +6,9 @@ import cn.fay.wechat.common.enumerate.MsgType;
 import cn.fay.wechat.common.listener.WechatEventHandlers;
 import cn.fay.wechat.common.util.AppConstants;
 import cn.fay.wechat.common.util.CommonUtils;
+import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 public class RootController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class);
     private WechatEventHandlers wechatEventHandlers;
     private XML2EventConvert convert = new XML2EventConvert();
 
@@ -27,24 +31,27 @@ public class RootController {
      */
     @RequestMapping("/${wechat.root.path:/wechat/root}")
     public String root(HttpServletRequest request) {
+        LOGGER.info("ROOT CONTROLLER request params:{}", JSON.toJSONString(request.getParameterMap()));
         String body = request.getParameter("body");
-        MsgType msgType = MsgType.getMsgType(CommonUtils.parseXMLValue(body, AppConstants.XML_MSGTYPE_TAG_NAME));
-        WXDefaultWXContext context = new WXDefaultWXContext();
-        if (msgType != null) {
-            switch (msgType) {
+        if (body != null && !"".equals(body)) {
+            MsgType msgType = MsgType.getMsgType(CommonUtils.parseXMLValue(body, AppConstants.XML_MSGTYPE_TAG_NAME));
+            WXDefaultWXContext context = new WXDefaultWXContext();
+            if (msgType != null) {
+                switch (msgType) {
                 /*
                 推送事件处理
                  */
-                case EVENT:
-                    if (wechatEventHandlers != null) {
-                        EventMsg eventMsg = convert.convert(body);
-                        context.setRequest(request);
-                        context.setWxMsg(eventMsg);
-                        wechatEventHandlers.doHandler(eventMsg, context);
-                        return context.getWritedData();
-                    }
-                    break;
-                default:
+                    case EVENT:
+                        if (wechatEventHandlers != null) {
+                            EventMsg eventMsg = convert.convert(body);
+                            context.setRequest(request);
+                            context.setWxMsg(eventMsg);
+                            wechatEventHandlers.doHandler(eventMsg, context);
+                            return context.getWritedData();
+                        }
+                        break;
+                    default:
+                }
             }
         }
         return "can not handle now, please call fay";
