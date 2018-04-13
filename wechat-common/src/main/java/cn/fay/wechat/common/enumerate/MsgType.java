@@ -15,7 +15,7 @@ public enum MsgType {
 
     public static MsgType getMsgType(String type) {
         for (MsgType msgType : values()) {
-            if (msgType.desc.equalsIgnoreCase(type)) {
+            if (msgType.name().equalsIgnoreCase(type)) {
                 return msgType;
             }
         }

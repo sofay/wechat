@@ -15,7 +15,7 @@ public enum WechatEventType {
 
     public static WechatEventType getWechatEvent(String type) {
         for (WechatEventType event : values()) {
-            if (event.desc.equalsIgnoreCase(type)) {
+            if (event.name().equalsIgnoreCase(type)) {
                 return event;
             }
         }
