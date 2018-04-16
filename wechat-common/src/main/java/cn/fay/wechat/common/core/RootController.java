@@ -33,12 +33,10 @@ public class RootController {
      */
     @RequestMapping("/${wechat.root.path:/wechat/root}")
     public String root(HttpServletRequest request) throws IOException {
-        LOGGER.info("ROOT CONTROLLER request params:{}", JSON.toJSONString(request.getParameterMap()));
-        String str = IOUtils.toString(request.getInputStream(), AppConstants.APP_ENCODING_NAME);
-        LOGGER.info("ROOT CONTROLLER request input stream:{}", str);
-        String body = request.getParameter("body");
-        if (body != null && !"".equals(body)) {
-            MsgType msgType = MsgType.getMsgType(CommonUtils.parseXMLValue(body, AppConstants.XML_MSGTYPE_TAG_NAME));
+        String xmlSource = IOUtils.toString(request.getInputStream(), AppConstants.APP_ENCODING_NAME);
+        LOGGER.info("ROOT CONTROLLER received xmlSource:{}", xmlSource);
+        if (xmlSource != null && !"".equals(xmlSource)) {
+            MsgType msgType = MsgType.getMsgType(CommonUtils.parseXMLValue(xmlSource, AppConstants.XML_MSGTYPE_TAG_NAME));
             WXDefaultWXContext context = new WXDefaultWXContext();
             if (msgType != null) {
                 switch (msgType) {
@@ -47,7 +45,7 @@ public class RootController {
                  */
                     case EVENT:
                         if (wechatEventHandlers != null) {
-                            EventMsg eventMsg = convert.convert(body);
+                            EventMsg eventMsg = convert.convert(xmlSource);
                             context.setRequest(request);
                             context.setWxMsg(eventMsg);
                             wechatEventHandlers.doHandler(eventMsg, context);
