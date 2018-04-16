@@ -32,12 +32,11 @@ public class WechatAuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String signature = request.getParameter("signature");
-        LOGGER.info("wechat auth filter signature:{}", signature);
-        if (signature != null && !"".equals(signature)) {
-            HttpServletResponse response = (HttpServletResponse) servletResponse;
+        String echostr = request.getParameter("echostr");
+        if (signature != null && echostr != null) {
+            LOGGER.info("wechat auth filter signature:{}", signature);
             String timestamp = request.getParameter("timestamp");
             String nonce = request.getParameter("nonce");
-            String echostr = request.getParameter("echostr");
             LOGGER.info("wechat auth filter received:timestamp={}, nonce={}, echostr={}", timestamp, nonce, echostr);
             String[] arr = new String[]{timestamp, nonce, token};
             Arrays.sort(arr);
@@ -52,6 +51,7 @@ public class WechatAuthFilter implements Filter {
                 String encodeStr = getFormattedText(bytes);
                 LOGGER.info("wechat auth filter encode str:{}", encodeStr);
                 if (encodeStr.equals(signature)) {
+                    HttpServletResponse response = (HttpServletResponse) servletResponse;
                     response.getWriter().write(echostr);
                     return;
                 }
@@ -66,7 +66,6 @@ public class WechatAuthFilter implements Filter {
     public void destroy() {
 
     }
-
 
 
     private String getFormattedText(byte[] bytes) {
