@@ -36,14 +36,14 @@ public class WechatAuthFilter implements Filter {
             LOGGER.info("wechat auth filter received:timestamp={}, nonce={}, echostr={}", timestamp, nonce, echostr);
             String[] arr = new String[]{timestamp, nonce, echostr};
             Arrays.sort(arr);
-            String str = "";
+            StringBuilder str = new StringBuilder();
             for (String temp : arr) {
-                str += temp;
+                str.append(temp);
             }
-            LOGGER.info("wechat auth filter str:", str);
+            LOGGER.info("wechat auth filter str:", str.toString());
             try {
                 MessageDigest digest = MessageDigest.getInstance("sha1");
-                byte[] bytes = digest.digest(str.getBytes(AppConstants.APP_ENCODING_NAME));
+                byte[] bytes = digest.digest(str.toString().getBytes(AppConstants.APP_ENCODING_NAME));
                 String encodeStr = new String(bytes, AppConstants.APP_ENCODING_NAME);
                 LOGGER.info("wechat auth filter encode str:", encodeStr);
                 if (encodeStr.equals(signature)) {
