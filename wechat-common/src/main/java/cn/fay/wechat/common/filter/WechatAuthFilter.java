@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class WechatAuthFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WechatAuthFilter.class);
     private final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-    @Value("wechat.config.token")
+    @Value("${wechat.config.token}")
     private String token;
 
     @Override

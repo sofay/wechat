@@ -40,10 +40,15 @@ public class WechatSpringConfig implements EnvironmentAware {
     }
 
     @Bean
-    public FilterRegistrationBean wechatAuthFilter() {
+    public WechatAuthFilter wechatAuthFilter() {
+        return new WechatAuthFilter();
+    }
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean(WechatAuthFilter wechatAuthFilter) {
         FilterRegistrationBean<WechatAuthFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.setFilter(new WechatAuthFilter());
+        filterRegistrationBean.setFilter(wechatAuthFilter);
         return filterRegistrationBean;
     }
 
