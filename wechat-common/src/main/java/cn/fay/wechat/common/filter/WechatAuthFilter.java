@@ -28,6 +28,7 @@ public class WechatAuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String signature = request.getParameter("signature");
+        LOGGER.info("wechat auth filter signature:{}", signature);
         if (signature != null && !"".equals(signature)) {
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             String timestamp = request.getParameter("timestamp");
@@ -40,12 +41,12 @@ public class WechatAuthFilter implements Filter {
             for (String temp : arr) {
                 str.append(temp);
             }
-            LOGGER.info("wechat auth filter str:", str.toString());
+            LOGGER.info("wechat auth filter str:{}", str.toString());
             try {
                 MessageDigest digest = MessageDigest.getInstance("sha1");
                 byte[] bytes = digest.digest(str.toString().getBytes(AppConstants.APP_ENCODING_NAME));
                 String encodeStr = new String(bytes, AppConstants.APP_ENCODING_NAME);
-                LOGGER.info("wechat auth filter encode str:", encodeStr);
+                LOGGER.info("wechat auth filter encode str:{}", encodeStr);
                 if (encodeStr.equals(signature)) {
                     response.getWriter().write(echostr);
                     return;
