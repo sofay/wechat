@@ -5,7 +5,7 @@ import cn.fay.wechat.common.entity.CustomEventMsg;
 import cn.fay.wechat.common.entity.EventMsg;
 import cn.fay.wechat.common.entity.LocationEventMsg;
 import cn.fay.wechat.common.entity.ScanEventMsg;
-import cn.fay.wechat.common.listener.WechatEventHandler;
+import cn.fay.wechat.common.handler.WechatEventHandler;
 
 /**
  * @author fay  fay9395@gmail.com

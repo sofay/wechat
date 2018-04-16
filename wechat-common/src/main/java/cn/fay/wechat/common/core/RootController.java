@@ -3,16 +3,18 @@ package cn.fay.wechat.common.core;
 import cn.fay.wechat.common.convert.XML2EventConvert;
 import cn.fay.wechat.common.entity.EventMsg;
 import cn.fay.wechat.common.enumerate.MsgType;
-import cn.fay.wechat.common.listener.WechatEventHandlers;
+import cn.fay.wechat.common.handler.WechatEventHandlers;
 import cn.fay.wechat.common.util.AppConstants;
 import cn.fay.wechat.common.util.CommonUtils;
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * @author fay  fay9395@gmail.com
@@ -30,8 +32,10 @@ public class RootController {
      * @return
      */
     @RequestMapping("/${wechat.root.path:/wechat/root}")
-    public String root(HttpServletRequest request) {
+    public String root(HttpServletRequest request) throws IOException {
         LOGGER.info("ROOT CONTROLLER request params:{}", JSON.toJSONString(request.getParameterMap()));
+        String str = IOUtils.toString(request.getInputStream(), AppConstants.APP_ENCODING_NAME);
+        LOGGER.info("ROOT CONTROLLER request input stream:{}", str);
         String body = request.getParameter("body");
         if (body != null && !"".equals(body)) {
             MsgType msgType = MsgType.getMsgType(CommonUtils.parseXMLValue(body, AppConstants.XML_MSGTYPE_TAG_NAME));

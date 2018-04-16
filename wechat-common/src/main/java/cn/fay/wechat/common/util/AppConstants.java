@@ -18,4 +18,5 @@ public class AppConstants {
     public static final String XML_LONGITUDE_TAG_NAME = "Longitude";
     public static final String XML_PRECISION_TAG_NAME = "Precision";
     public static final String XML_TICKET_TAG_NAME = "Ticket";
+    public static final String APP_ENCODING_NAME = "UTF-8";
 }

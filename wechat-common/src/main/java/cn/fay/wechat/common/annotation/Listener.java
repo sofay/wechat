@@ -1,6 +1,6 @@
 package cn.fay.wechat.common.annotation;
 
-import cn.fay.wechat.common.listener.WechatEventHandler;
+import cn.fay.wechat.common.handler.WechatEventHandler;
 
 import java.lang.annotation.*;
 

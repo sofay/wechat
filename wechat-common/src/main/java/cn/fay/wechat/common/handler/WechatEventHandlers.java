@@ -1,4 +1,4 @@
-package cn.fay.wechat.common.listener;
+package cn.fay.wechat.common.handler;
 
 import cn.fay.wechat.common.core.WXContext;
 import cn.fay.wechat.common.entity.CustomEventMsg;
@@ -105,11 +105,11 @@ public class WechatEventHandlers implements WechatEventHandler {
         }
     }
 
-    public void setListeners(List<WechatEventHandler> eventListeners) {
+    public void setHandlers(List<WechatEventHandler> eventListeners) {
         this.listeners = eventListeners;
     }
 
-    public void registListener(WechatEventHandler listener) {
+    public void registHandler(WechatEventHandler listener) {
         if (this.listeners == null) {
             this.listeners = new ArrayList<>(10);
         }

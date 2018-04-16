@@ -1,7 +1,6 @@
-package cn.fay.assistant.wechat.listener;
+package cn.fay.assistant.wechat.handler;
 
 import cn.fay.wechat.common.adapt.WechatEventHandlerAdapt;
-import cn.fay.wechat.common.annotation.Listener;
 
 /**
  * @author fay  fay9395@gmail.com

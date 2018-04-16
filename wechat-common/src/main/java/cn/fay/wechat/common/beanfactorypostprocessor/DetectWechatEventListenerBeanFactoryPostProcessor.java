@@ -1,8 +1,9 @@
 package cn.fay.wechat.common.beanfactorypostprocessor;
 
 import cn.fay.wechat.common.annotation.Listener;
-import cn.fay.wechat.common.listener.WechatEventHandler;
-import cn.fay.wechat.common.listener.WechatEventHandlers;
+import cn.fay.wechat.common.core.RootController;
+import cn.fay.wechat.common.handler.WechatEventHandler;
+import cn.fay.wechat.common.handler.WechatEventHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
+import java.lang.reflect.Field;
+
 /**
  * @author fay  fay9395@gmail.com
  * @date 2018/4/13 下午1:45.
@@ -22,11 +25,29 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 public class DetectWechatEventListenerBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(DetectWechatEventListenerBeanFactoryPostProcessor.class);
     private String[] basePackages;
-    private String wechatEventHandlersBeanName = "wechatEventHandlers";
-    private String rootControllerBeanName = "rootController";
+    private String wechatEventHandlersBeanName = "";
+    private String rootControllerBeanName = "";
+    private boolean init = false;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        if (!init) {
+            String[] rootControllersBeanNames = beanFactory.getBeanNamesForType(RootController.class);
+            if (rootControllersBeanNames.length == 1) {
+                rootControllerBeanName = rootControllersBeanNames[0];
+                for (Field field : RootController.class.getDeclaredFields()) {
+                    if (WechatEventHandlers.class.isAssignableFrom((Class)field.getGenericType())) {
+                        wechatEventHandlersBeanName = field.getName();
+                        init = true;
+                        break;
+                    }
+                }
+            }
+            if (!init) {
+                LOGGER.warn("DetectWechatEventListenerBeanFactoryPostProcessor init error: there is no RootController or more, or not found {} field in {}", WechatEventHandlers.class.getName(), RootController.class);
+                LOGGER.error("DetectWechatEventListenerBeanFactoryPostProcessor init error: there is no RootController or more, or not found {} field in {}", WechatEventHandlers.class.getName(), RootController.class);
+            }
+        }
         if (beanFactory instanceof BeanDefinitionRegistry) {
             ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner((BeanDefinitionRegistry) beanFactory, false) {
                 @Override
@@ -42,7 +63,7 @@ public class DetectWechatEventListenerBeanFactoryPostProcessor implements BeanFa
                             object = wechatEventHandlers;
                         }
                         WechatEventHandlers wechatEventHandlers = (WechatEventHandlers) object;
-                        wechatEventHandlers.registListener(/*init now*/beanFactory.getBean(definitionHolder.getBeanName(), WechatEventHandler.class));
+                        wechatEventHandlers.registHandler(/*init now*/beanFactory.getBean(definitionHolder.getBeanName(), WechatEventHandler.class));
                     }
                     LOGGER.info("DETECTED WECHAT EVENT LISTENER: {}", definitionHolder.getBeanDefinition().getBeanClassName());
                 }

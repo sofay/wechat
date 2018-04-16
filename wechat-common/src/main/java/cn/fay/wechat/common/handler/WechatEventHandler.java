@@ -1,4 +1,4 @@
-package cn.fay.wechat.common.listener;
+package cn.fay.wechat.common.handler;
 
 import cn.fay.wechat.common.core.WXContext;
 import cn.fay.wechat.common.entity.CustomEventMsg;
