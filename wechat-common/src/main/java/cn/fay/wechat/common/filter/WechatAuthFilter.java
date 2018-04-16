@@ -1,6 +1,8 @@
 package cn.fay.wechat.common.filter;
 
 import cn.fay.wechat.common.util.AppConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import java.util.Arrays;
  * @date 2018/4/16 下午12:19.
  */
 public class WechatAuthFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WechatAuthFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -29,16 +33,20 @@ public class WechatAuthFilter implements Filter {
             String timestamp = request.getParameter("timestamp");
             String nonce = request.getParameter("nonce");
             String echostr = request.getParameter("echostr");
+            LOGGER.info("wechat auth filter received:timestamp={}, nonce={}, echostr={}", timestamp, nonce, echostr);
             String[] arr = new String[]{timestamp, nonce, echostr};
             Arrays.sort(arr);
             String str = "";
             for (String temp : arr) {
                 str += temp;
             }
+            LOGGER.info("wechat auth filter str:", str);
             try {
                 MessageDigest digest = MessageDigest.getInstance("sha1");
                 byte[] bytes = digest.digest(str.getBytes(AppConstants.APP_ENCODING_NAME));
-                if (new String(bytes, AppConstants.APP_ENCODING_NAME).equals(signature)) {
+                String encodeStr = new String(bytes, AppConstants.APP_ENCODING_NAME);
+                LOGGER.info("wechat auth filter encode str:", encodeStr);
+                if (encodeStr.equals(signature)) {
                     response.getWriter().write(echostr);
                     return;
                 }
